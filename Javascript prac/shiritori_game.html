@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Shiritori Game</title>
+  <style>
+    #game-container {
+      margin: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div id="game-container">
+    <h1>Shiritori Game</h1>
+    <p id="current-word">Current word: </p>
+    <input type="text" id="input" placeholder="Enter a word">
+    <button id="play-btn">Play</button>
+    <p id="message"></p>
+  </div>
+
+  <script>
+    // Game object to encapsulate the Shiritori game logic
+    const ShiritoriGame = {
+      words: ["apple", "elephant", "tiger", "rabbit", "cat", "turtle"],
+      currentWord: "",
+
+      initializeGame() {
+        this.currentWord = this.words[Math.floor(Math.random() * this.words.length)];
+        this.displayCurrentWord();
+        this.setupPlayButton();
+        console.log("Game initialized. Current word: " + this.currentWord);
+      },
+
+      displayCurrentWord() {
+        const currentWordElement = document.getElementById("current-word");
+        currentWordElement.textContent = "Current word: " + this.currentWord;
+      },
+
+      setupPlayButton() {
+        const playButton = document.getElementById("play-btn");
+        playButton.addEventListener("click", () => this.play());
+      },
+
+      play() {
+        const inputField = document.getElementById("input");
+        const input = inputField.value.toLowerCase().trim();
+        console.log("User input: " + input);
+
+        if (this.isValidInput(input)) {
+          if (this.isWordUsed(input)) {
+            this.showMessage("You already used that word. Try again!");
+            console.log("Word already used: " + input);
+          } else {
+            if (this.isValidWord(input)) {
+              this.currentWord = input;
+              this.displayCurrentWord();
+              console.log("Valid word. Current word: " + this.currentWord);
+            } else {
+              this.showMessage("Invalid word. Try again!");
+              console.log("Invalid word: " + input);
+            }
+          }
+        } else {
+          this.showMessage("Invalid input. Try again!");
+          console.log("Invalid input: " + input);
+        }
+
+        inputField.value = "";
+      },
+
+      isValidInput(input) {
+        return (
+          input.length > 0 &&
+          input.charAt(0) === this.currentWord.charAt(this.currentWord.length - 1)
+        );
+      },
+
+      isWordUsed(word) {
+        // Implement your own logic to track used words
+        return false;
+      },
+
+      isValidWord(word) {
+        // Implement your own logic to validate words
+        return true;
+      },
+
+      showMessage(message) {
+        const messageElement = document.getElementById("message");
+        messageElement.textContent = message;
+      },
+    };
+
+    // Initialize the game when the page loads
+    document.addEventListener("DOMContentLoaded", () => {
+      ShiritoriGame.initializeGame();
+    });
+  </script>
+</body>
+</html>
